@@ -15,7 +15,7 @@ const links: UsefulLink[] = [
   },
   {
     title: "ДНСК",
-    url: "https://www.dnsk.mrrb.bg/",
+    url: "https://dnsk.bg/",
     description: "Дирекция за национален строителен контрол"
   },
   {
