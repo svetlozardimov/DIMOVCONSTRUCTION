@@ -8,45 +8,48 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ scrollToSection }) => {
   return (
-    <section id={SectionId.HOME} className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section id={SectionId.HOME} className="relative h-screen flex items-center justify-center overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" 
+          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop" 
           alt="Steel construction frame"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-800/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-primary" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto mt-16">
         <div className="animate-fade-in-up">
-          <span className="inline-block py-1 px-3 rounded-full bg-secondary/20 text-secondary border border-secondary/50 text-sm font-semibold tracking-wide mb-6">
-            BIM ПРОЕКТИРАНЕ НА СТОМАНЕНИ КОНСТРУКЦИИ
-          </span>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-            DIMOV <span className="text-secondary">CONSTRUCTION</span>
+          <div className="inline-flex items-center space-x-2 mb-8">
+             <div className="h-[2px] w-8 bg-secondary"></div>
+             <span className="text-secondary font-bold tracking-[0.2em] uppercase text-sm">Проектиране на сгради и съоръжения</span>
+             <div className="h-[2px] w-8 bg-secondary"></div>
+          </div>
+          
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-none uppercase">
+            Dimov <span className="text-secondary">Const</span>ruction
           </h1>
-          <p className="text-lg sm:text-xl text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
-            Building Information Modeling
+          
+          <p className="text-xl text-gray-300 mb-2 max-w-3xl mx-auto font-light">
+            BIM Проектиране на стоманени конструкции
           </p>
-          <p className="text-base sm:text-lg text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-             Проектиране на строителната конструкция на стоманени складови и производствени халета. 
-             Работен проект с КМД чертежи и NC/DXF файлове за автоматизирано рязане.
+          <p className="text-base text-gray-400 mb-12 max-w-2xl mx-auto">
+             Изготвяне на работен проект с КМД чертежи и NC/DXF файлове за автоматизирано производство.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button
               onClick={() => scrollToSection(SectionId.PROJECTS)}
-              className="group bg-secondary hover:bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all duration-300 flex items-center justify-center"
+              className="group bg-secondary hover:bg-red-700 text-white px-10 py-4 rounded text-lg font-bold uppercase tracking-wide transition-all duration-300 flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)]"
             >
-              Виж Обектите
+              Разгледай Обекти
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               onClick={() => scrollToSection(SectionId.CONTACT)}
-              className="bg-transparent border-2 border-white hover:bg-white hover:text-primary text-white px-8 py-4 rounded-lg text-lg font-bold transition-all duration-300"
+              className="bg-transparent border-2 border-white/30 hover:border-white hover:bg-white/10 text-white px-10 py-4 rounded text-lg font-bold uppercase tracking-wide transition-all duration-300"
             >
               Контакти
             </button>
@@ -55,7 +58,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToSection }) => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce text-white/50">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce text-white/30">
         <ChevronDown className="h-10 w-10" />
       </div>
     </section>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Building2 } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { SectionId } from '../types';
 
 interface NavbarProps {
@@ -29,24 +29,23 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-primary/95 backdrop-blur-sm shadow-lg py-2' : 'bg-transparent py-4'
+        isScrolled ? 'bg-primary/95 backdrop-blur-sm shadow-lg py-2' : 'bg-black/40 backdrop-blur-sm py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => scrollToSection(SectionId.HOME)}>
-            <div className="bg-gray-200 p-1 rounded mr-2">
-               <Building2 className="h-8 w-8 text-primary" />
-            </div>
-            <div className="flex flex-col">
-                <span className={`font-bold text-xl tracking-tight leading-none ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-white'}`}>
-                DIMOV
-                </span>
-                <span className={`font-bold text-lg tracking-tight leading-none text-secondary`}>
-                CONSTRUCTION
-                </span>
-            </div>
+          <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => scrollToSection(SectionId.HOME)}>
+             <div className="flex flex-col justify-center">
+                <div className="flex items-baseline leading-none">
+                   <span className="text-4xl font-black text-secondary tracking-tighter">D</span>
+                   <span className="text-2xl font-bold text-white">imo</span>
+                   <span className="ml-1 text-2xl font-black text-secondary italic transform -skew-x-12">V</span>
+                </div>
+                <div className="text-[10px] font-bold text-white tracking-[0.2em] uppercase leading-none mt-0.5 pl-1">
+                  Construction
+                </div>
+             </div>
           </div>
 
           {/* Desktop Menu */}
@@ -55,18 +54,18 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className={`text-sm font-medium transition-colors duration-200 ${
+                className={`text-sm font-bold uppercase tracking-wide transition-colors duration-200 ${
                   activeSection === link.id
                     ? 'text-secondary'
                     : 'text-gray-300 hover:text-white'
                 }`}
               >
-                {link.label.toUpperCase()}
+                {link.label}
               </button>
             ))}
             <button
               onClick={() => scrollToSection(SectionId.CONTACT)}
-              className="bg-secondary hover:bg-amber-600 text-white px-5 py-2 rounded-md text-sm font-medium transition-colors"
+              className="bg-secondary hover:bg-red-700 text-white px-5 py-2 rounded text-sm font-bold uppercase tracking-wide transition-colors shadow-md"
             >
               Оферта
             </button>
@@ -86,7 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-primary shadow-xl absolute w-full">
+        <div className="md:hidden bg-primary shadow-xl absolute w-full border-t border-gray-800">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <button
@@ -95,10 +94,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
                   scrollToSection(link.id);
                   setIsMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-3 py-4 rounded-md text-base font-medium ${
+                className={`block w-full text-left px-3 py-4 rounded-md text-base font-bold uppercase ${
                   activeSection === link.id
-                    ? 'bg-slate-800 text-secondary'
-                    : 'text-gray-300 hover:bg-slate-700 hover:text-white'
+                    ? 'bg-gray-800 text-secondary'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}
               >
                 {link.label}
