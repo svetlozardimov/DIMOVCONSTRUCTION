@@ -4,6 +4,9 @@ import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Calculator from './components/Calculator';
+import Articles from './components/Articles';
+import UsefulLinks from './components/UsefulLinks';
 import AIConsultant from './components/AIConsultant';
 import { SectionId } from './types';
 
@@ -23,7 +26,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-50% 0px -50% 0px', // Trigger when element is in middle of viewport
+      rootMargin: '-30% 0px -70% 0px', // Updated trigger margin for better accuracy with smaller sections
       threshold: 0,
     };
 
@@ -52,7 +55,10 @@ const App: React.FC = () => {
       <main>
         <Hero scrollToSection={scrollToSection} />
         <Projects />
+        <Calculator />
         <About />
+        <Articles />
+        <UsefulLinks />
         <Contact />
       </main>
 

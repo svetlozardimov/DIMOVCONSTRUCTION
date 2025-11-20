@@ -22,6 +22,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
   const navLinks = [
     { id: SectionId.HOME, label: 'Начало' },
     { id: SectionId.PROJECTS, label: 'Проекти' },
+    { id: SectionId.CALCULATOR, label: 'Калкулатор' },
+    { id: SectionId.ARTICLES, label: 'Статии' },
+    { id: SectionId.LINKS, label: 'Връзки' },
     { id: SectionId.ABOUT, label: 'За Нас' },
     { id: SectionId.CONTACT, label: 'Контакти' },
   ];
@@ -29,10 +32,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-primary/95 backdrop-blur-sm shadow-lg py-2' : 'bg-black/40 backdrop-blur-sm py-4'
+        isScrolled ? 'bg-primary/95 backdrop-blur-sm shadow-lg py-2' : 'bg-black/60 backdrop-blur-sm py-4'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => scrollToSection(SectionId.HOME)}>
@@ -49,35 +52,29 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden xl:flex items-center space-x-6">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className={`text-sm font-bold uppercase tracking-wide transition-colors duration-200 ${
+                className={`text-sm font-bold uppercase tracking-wide transition-all duration-200 border-b-2 ${
                   activeSection === link.id
-                    ? 'text-secondary'
-                    : 'text-gray-300 hover:text-white'
+                    ? 'text-secondary border-secondary'
+                    : 'text-gray-300 border-transparent hover:text-white hover:border-gray-500'
                 }`}
               >
                 {link.label}
               </button>
             ))}
-            <button
-              onClick={() => scrollToSection(SectionId.CONTACT)}
-              className="bg-secondary hover:bg-red-700 text-white px-5 py-2 rounded text-sm font-bold uppercase tracking-wide transition-colors shadow-md"
-            >
-              Оферта
-            </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="xl:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-300 hover:text-white focus:outline-none"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
             </button>
           </div>
         </div>
@@ -85,7 +82,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-primary shadow-xl absolute w-full border-t border-gray-800">
+        <div className="xl:hidden bg-primary shadow-xl absolute w-full border-t border-gray-800 max-h-[80vh] overflow-y-auto">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <button
@@ -96,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
                 }}
                 className={`block w-full text-left px-3 py-4 rounded-md text-base font-bold uppercase ${
                   activeSection === link.id
-                    ? 'bg-gray-800 text-secondary'
+                    ? 'bg-gray-800 text-secondary border-l-4 border-secondary'
                     : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}
               >

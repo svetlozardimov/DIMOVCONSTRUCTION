@@ -45,7 +45,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center border-b border-gray-100 pb-2">
                        <span className="font-bold text-primary">0888 574164</span>
-                       <span className="text-sm text-gray-500">инж. Димо Димов</span>
+                       <span className="text-sm text-gray-500">инж. Димо Димов (Електро)</span>
                     </div>
                   </div>
                 </div>

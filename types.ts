@@ -1,7 +1,10 @@
 export enum SectionId {
   HOME = 'home',
   PROJECTS = 'projects',
+  CALCULATOR = 'calculator',
   ABOUT = 'about',
+  ARTICLES = 'articles',
+  LINKS = 'links',
   CONTACT = 'contact'
 }
 
@@ -31,4 +34,18 @@ export interface ServiceItem {
   title: string;
   description: string;
   iconName: string;
+}
+
+export interface Article {
+  id: number;
+  title: string;
+  date: string;
+  summary: string;
+  imageUrl: string;
+}
+
+export interface UsefulLink {
+  title: string;
+  url: string;
+  description: string;
 }

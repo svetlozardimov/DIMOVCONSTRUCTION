@@ -6,7 +6,7 @@ import { sendChatMessage } from '../services/geminiService';
 const AIConsultant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: 'Здравейте! Аз съм виртуалният консултант на Constructa. Как мога да ви помогна с вашия проект?', timestamp: new Date() }
+    { role: 'model', text: 'Здравейте! Аз съм виртуалният консултант на Dimov Construction. Как мога да ви помогна с вашия проект?', timestamp: new Date() }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +74,7 @@ const AIConsultant: React.FC = () => {
                 <Bot size={20} className="text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-sm">Constructa AI</h3>
+                <h3 className="font-bold text-sm">Dimov Construction</h3>
                 <p className="text-xs text-slate-300">Винаги на линия</p>
               </div>
             </div>
