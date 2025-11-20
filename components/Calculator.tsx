@@ -66,21 +66,20 @@ const Calculator: React.FC = () => {
   };
 
   const resetCalculator = () => {
-    if (window.confirm('Сигурни ли сте, че искате да изчистите всички полета?')) {
-      setInputs({
-        projectType: '',
-        objectName: '',
-        area: 0,
-        wallSections: 1,
-        additionalLength: 0,
-        hasCrane: false,
-        hasComplexity: false,
-        complexityPercentage: 0,
-        isAccelerated: false,
-        includeSupervision: false,
-        currencyDisplay: 'eur'
-      });
-    }
+    setInputs({
+      projectType: '',
+      objectName: '',
+      area: 0,
+      wallSections: 1,
+      additionalLength: 0,
+      hasCrane: false,
+      hasComplexity: false,
+      complexityPercentage: 0,
+      isAccelerated: false,
+      includeSupervision: false,
+      currencyDisplay: 'eur'
+    });
+    setResult({ totalEur: 0, log: [] });
   };
 
   const exportToTxt = () => {
@@ -295,7 +294,7 @@ const Calculator: React.FC = () => {
                     <Upload size={14} /> Зареди
                     <input type="file" accept=".json" className="hidden" onChange={loadFromJson} />
                   </label>
-                  <button onClick={resetCalculator} className="col-span-2 flex items-center justify-center gap-1 border border-red-200 text-red-600 py-2 px-3 rounded text-xs font-bold hover:bg-red-50 transition-colors mt-2">
+                  <button onClick={resetCalculator} type="button" className="col-span-2 flex items-center justify-center gap-1 border border-red-200 text-red-600 py-2 px-3 rounded text-xs font-bold hover:bg-red-50 transition-colors mt-2">
                     <RotateCcw size={14} /> Изчисти всички полета
                   </button>
                 </div>
