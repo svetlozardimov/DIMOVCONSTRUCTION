@@ -1,3 +1,4 @@
+
 export enum SectionId {
   HOME = 'home',
   PROJECTS = 'projects',
@@ -42,6 +43,7 @@ export interface Article {
   title: string;
   date: string;
   summary: string;
+  content: string[]; // Array of paragraphs for the full article
   imageUrl: string;
 }
 

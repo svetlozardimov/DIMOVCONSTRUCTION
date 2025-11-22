@@ -34,7 +34,8 @@ const Contact: React.FC = () => {
           email: formData.email,
           message: formData.message,
           _subject: "Ново запитване от сайта (Dimov Construction)",
-          _template: "table"
+          _template: "table",
+          _captcha: "false" // Disable captcha to prevent AJAX errors
         })
       });
 
