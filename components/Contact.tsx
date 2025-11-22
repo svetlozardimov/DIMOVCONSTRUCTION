@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SectionId } from '../types';
-import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle, AlertCircle, Facebook, Copy, Check } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle, AlertCircle, Facebook, Copy, Check, Linkedin, Instagram } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -167,24 +167,44 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* Facebook - NEW */}
+              {/* Social Media Links */}
               <div className="flex items-start space-x-4 group">
                 <div className="bg-gray-100 p-3 rounded text-secondary group-hover:bg-blue-600 group-hover:text-white transition-colors">
                    <Facebook size={24} />
                 </div>
-                 <div>
-                  <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Facebook</h4>
-                  <p className="mt-1">
+                 <div className="w-full">
+                  <h4 className="font-bold text-primary uppercase text-sm tracking-wide mb-2">Социални мрежи</h4>
+                  <div className="flex flex-wrap gap-4">
                     <a 
                       href="https://www.facebook.com/DimovConstructionOOD" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-blue-600 font-medium transition-colors flex items-center gap-2"
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded hover:border-blue-600 hover:text-blue-600 transition-colors"
                     >
-                      Dimov Construction OOD
-                      <ExternalLinkIcon size={14} />
+                      <Facebook size={18} />
+                      <span className="text-sm font-bold">Facebook</span>
                     </a>
-                  </p>
+
+                    <a 
+                      href="https://www.linkedin.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded hover:border-blue-700 hover:text-blue-700 transition-colors"
+                    >
+                      <Linkedin size={18} />
+                      <span className="text-sm font-bold">LinkedIn</span>
+                    </a>
+
+                    <a 
+                      href="https://www.instagram.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded hover:border-pink-600 hover:text-pink-600 transition-colors"
+                    >
+                      <Instagram size={18} />
+                      <span className="text-sm font-bold">Instagram</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
