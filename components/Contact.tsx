@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SectionId } from '../types';
-import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle, AlertCircle, Facebook, Copy, Check } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,10 +11,17 @@ const Contact: React.FC = () => {
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCopy = (text: string, fieldId: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldId);
+    setTimeout(() => setCopiedField(null), 2000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,6 +61,20 @@ const Contact: React.FC = () => {
     }
   };
 
+  const CopyButton = ({ text, id }: { text: string, id: string }) => (
+    <button 
+      onClick={() => handleCopy(text, id)}
+      className="ml-2 p-1 text-gray-400 hover:text-secondary hover:bg-gray-100 rounded transition-all"
+      title="Копирай"
+    >
+      {copiedField === id ? (
+        <Check size={16} className="text-green-600 animate-bounce" />
+      ) : (
+        <Copy size={16} />
+      )}
+    </button>
+  );
+
   return (
     <section id={SectionId.CONTACT} className="py-24 bg-white relative">
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-primary"></div>
@@ -69,16 +90,21 @@ const Contact: React.FC = () => {
             </p>
 
             <div className="space-y-8">
+              {/* Address */}
               <div className="flex items-start space-x-4 group">
                 <div className="bg-gray-100 p-3 rounded text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Офис</h4>
+                  <div className="flex items-center">
+                    <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Офис</h4>
+                    <CopyButton text="гр. Стара Загора, бул. Цар Симеон Велики №4, ет.5, ап.10" id="address" />
+                  </div>
                   <p className="text-gray-600 mt-1">гр. Стара Загора,<br/>бул. "Цар Симеон Велики" №4, ет.5, ап.10</p>
                 </div>
               </div>
 
+              {/* Phones */}
               <div className="flex items-start space-x-4 group">
                 <div className="bg-gray-100 p-3 rounded text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
                   <Phone size={24} />
@@ -87,40 +113,78 @@ const Contact: React.FC = () => {
                   <h4 className="font-bold text-primary uppercase text-sm tracking-wide mb-2">Телефони</h4>
                   <div className="grid grid-cols-1 gap-3">
                     <div className="flex justify-between items-center border-b border-gray-100 pb-2">
-                       <span className="font-bold text-primary">0888 536401</span>
-                       <span className="text-sm text-gray-500">инж. Пламен Димов</span>
+                       <div className="flex items-center gap-2">
+                         <span className="font-bold text-primary">0888 536401</span>
+                         <CopyButton text="0888 536401" id="phone1" />
+                       </div>
+                       <span className="text-sm text-gray-500 text-right">инж. Пламен Димов</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-gray-100 pb-2">
-                       <span className="font-bold text-primary">0883 386003</span>
-                       <span className="text-sm text-gray-500">инж. Светлозар Димов</span>
+                       <div className="flex items-center gap-2">
+                         <span className="font-bold text-primary">0883 386003</span>
+                         <CopyButton text="0883 386003" id="phone2" />
+                       </div>
+                       <span className="text-sm text-gray-500 text-right">инж. Светлозар Димов</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-gray-100 pb-2">
-                       <span className="font-bold text-primary">0888 574164</span>
-                       <span className="text-sm text-gray-500">инж. Димо Димов (Електро)</span>
+                       <div className="flex items-center gap-2">
+                         <span className="font-bold text-primary">0888 574164</span>
+                         <CopyButton text="0888 574164" id="phone3" />
+                       </div>
+                       <span className="text-sm text-gray-500 text-right">инж. Димо Димов (Електро)</span>
                     </div>
                   </div>
                 </div>
               </div>
 
+              {/* Email */}
               <div className="flex items-start space-x-4 group">
                 <div className="bg-gray-100 p-3 rounded text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
                   <Mail size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Email</h4>
+                  <div className="flex items-center">
+                    <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Email</h4>
+                    <CopyButton text="dimovconstruction.sz@gmail.com" id="email" />
+                  </div>
                   <p className="text-gray-600 mt-1 hover:text-secondary transition-colors">
                     <a href="mailto:dimovconstruction.sz@gmail.com">dimovconstruction.sz@gmail.com</a>
                   </p>
                 </div>
               </div>
 
+              {/* Website */}
               <div className="flex items-start space-x-4 group">
                 <div className="bg-gray-100 p-3 rounded text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
                    <Globe size={24} />
                 </div>
                  <div>
-                  <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Уебсайт</h4>
+                  <div className="flex items-center">
+                     <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Уебсайт</h4>
+                     <CopyButton text="https://www.dimovconstruction.com" id="website" />
+                  </div>
                   <p className="text-gray-600 mt-1">www.dimovconstruction.com</p>
+                </div>
+              </div>
+
+              {/* Facebook - NEW */}
+              <div className="flex items-start space-x-4 group">
+                <div className="bg-gray-100 p-3 rounded text-secondary group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                   <Facebook size={24} />
+                </div>
+                 <div>
+                  <h4 className="font-bold text-primary uppercase text-sm tracking-wide">Facebook</h4>
+                  <p className="mt-1">
+                    <a 
+                      href="https://www.facebook.com/DimovConstructionOOD" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-blue-600 font-medium transition-colors flex items-center gap-2"
+                    >
+                      Dimov Construction OOD
+                      <ExternalLinkIcon size={14} />
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -284,5 +348,23 @@ const Contact: React.FC = () => {
     </section>
   );
 };
+
+const ExternalLinkIcon = ({ size }: { size: number }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    <polyline points="15 3 21 3 21 9" />
+    <line x1="10" y1="14" x2="21" y2="3" />
+  </svg>
+);
 
 export default Contact;
