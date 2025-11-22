@@ -32,23 +32,23 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, scrollToSection }) => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-primary/95 backdrop-blur-sm shadow-lg py-2' : 'bg-black/60 backdrop-blur-sm py-4'
+        isScrolled ? 'bg-primary/95 backdrop-blur-sm shadow-lg py-2' : 'bg-black/60 backdrop-blur-sm py-2 md:py-4'
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => scrollToSection(SectionId.HOME)}>
-             <div className="flex flex-col justify-center">
-                <div className="flex items-baseline leading-none">
-                   <span className="text-4xl font-black text-secondary tracking-tighter">D</span>
-                   <span className="text-2xl font-bold text-white">imo</span>
-                   <span className="ml-1 text-2xl font-black text-secondary italic transform -skew-x-12">V</span>
-                </div>
-                <div className="text-[10px] font-bold text-white tracking-[0.2em] uppercase leading-none mt-0.5 pl-1">
-                  Construction
-                </div>
-             </div>
+        {/* Increased height from h-16 to h-20/h-24 for bigger logo */}
+        <div className="flex justify-between items-center h-20 md:h-24">
+          {/* Logo - Using the Dark Background SVG (White text) provided */}
+          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => scrollToSection(SectionId.HOME)}>
+             {/* Increased SVG height from h-14 to h-16 md:h-20 */}
+             <svg viewBox="0 0 400 200" className="h-16 md:h-20 w-auto" aria-label="Dimov Construction Logo">
+                <g transform="translate(200, 85)">
+                  <text transform="translate(-127, 0) skewX(-4)" fill="#DC2626" fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="112" textAnchor="middle" dominantBaseline="middle">D</text>
+                  <text transform="translate(5, 0) skewX(0)" fill="#FFFFFF" fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="85" textAnchor="middle" dominantBaseline="middle" letterSpacing="0em">imo</text>
+                  <text transform="translate(125, 0) skewX(-44)" fill="#DC2626" fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="85" textAnchor="middle" dominantBaseline="middle">V</text>
+                </g>
+                <text x="200" y="146" transform="rotate(0 200 146) skewX(0)" fill="#FFFFFF" fontFamily="Montserrat, sans-serif" fontWeight="bold" fontSize="20" letterSpacing="0.65em" textAnchor="middle" dominantBaseline="middle">CONSTRUCTION</text>
+             </svg>
           </div>
 
           {/* Desktop Menu */}

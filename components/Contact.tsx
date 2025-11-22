@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SectionId } from '../types';
-import { MapPin, Phone, Mail, Globe, Loader2, CheckCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,34 +9,48 @@ const Contact: React.FC = () => {
     email: '',
     message: ''
   });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    setStatus('sending');
 
-    setStatus('loading');
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/dimovconstruction.sz@gmail.com", {
+        method: "POST",
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          message: formData.message,
+          _subject: "Ново запитване от сайта (Dimov Construction)",
+          _template: "table"
+        })
+      });
 
-    const subject = `Запитване от уебсайт: ${formData.name}`;
-    const body = `Име: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}\n\nСъобщение:\n${formData.message}`;
-    
-    const mailtoLink = `mailto:dimovconstruction.sz@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const result = await response.json();
 
-    // Short delay to show loading state, then open email client
-    setTimeout(() => {
-      window.location.href = mailtoLink;
-      
-      setStatus('success');
-      setFormData({ name: '', phone: '', email: '', message: '' });
-      
-      // Reset status after 5 seconds
-      setTimeout(() => setStatus('idle'), 5000);
-    }, 1000);
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', phone: '', email: '', message: '' });
+      } else {
+        console.error("Submission failed", result);
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error("Network error", error);
+      setStatus('error');
+    }
   };
 
   return (
@@ -120,83 +134,104 @@ const Contact: React.FC = () => {
             <p className="text-gray-400 text-sm mb-8 relative z-10">Ще се свържем с вас възможно най-скоро.</p>
             
             {status === 'success' ? (
-              <div className="relative z-10 bg-green-500/10 border border-green-500/20 rounded-lg p-8 text-center animate-fade-in">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500 mb-4">
-                  <CheckCircle className="w-8 h-8 text-white" />
-                </div>
-                <h5 className="text-xl font-bold text-white mb-2">Готово!</h5>
-                <p className="text-gray-300">Вашият имейл клиент беше отворен с попълнените данни. Моля, натиснете бутона за изпращане в него.</p>
+              <div className="flex flex-col items-center justify-center h-64 animate-fade-in text-center relative z-10">
+                <CheckCircle size={64} className="text-green-500 mb-4" />
+                <h5 className="text-xl font-bold text-white">Успешно изпратено!</h5>
+                <p className="text-gray-400 mt-2 text-sm">Благодарим за запитването. Ще ви отговорим на посочения имейл.</p>
                 <button 
                   onClick={() => setStatus('idle')}
-                  className="mt-6 text-sm font-bold text-green-400 hover:text-white uppercase tracking-wide"
+                  className="mt-6 px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm font-bold uppercase"
                 >
-                  Изпрати ново съобщение
+                  Изпрати ново
                 </button>
               </div>
             ) : (
-              <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="name" className="block text-xs font-bold uppercase text-gray-400 mb-1">Име</label>
+                      <input 
+                        type="text" 
+                        id="name"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        disabled={status === 'sending'}
+                        className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all disabled:opacity-50" 
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-xs font-bold uppercase text-gray-400 mb-1">Телефон</label>
+                      <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        disabled={status === 'sending'}
+                        className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all disabled:opacity-50" 
+                      />
+                    </div>
+                  </div>
+                  
                   <div>
-                    <label htmlFor="name" className="block text-xs font-bold uppercase text-gray-400 mb-1">Име</label>
+                    <label htmlFor="email" className="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
                     <input 
-                      type="text" 
-                      id="name" 
+                      type="email" 
+                      id="email" 
+                      name="email"
                       required
-                      value={formData.name}
+                      value={formData.email}
                       onChange={handleChange}
-                      className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" 
+                      disabled={status === 'sending'}
+                      className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all disabled:opacity-50" 
                     />
                   </div>
+
                   <div>
-                    <label htmlFor="phone" className="block text-xs font-bold uppercase text-gray-400 mb-1">Телефон</label>
-                    <input 
-                      type="tel" 
-                      id="phone" 
-                      value={formData.phone}
+                    <label htmlFor="message" className="block text-xs font-bold uppercase text-gray-400 mb-1">Съобщение</label>
+                    <textarea 
+                      id="message" 
+                      name="message"
+                      rows={4} 
+                      required
+                      value={formData.message}
                       onChange={handleChange}
-                      className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" 
-                    />
+                      disabled={status === 'sending'}
+                      className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all disabled:opacity-50"
+                    ></textarea>
                   </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" 
-                  />
-                </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-xs font-bold uppercase text-gray-400 mb-1">Съобщение</label>
-                  <textarea 
-                    id="message" 
-                    rows={4} 
-                    required
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all"
-                  ></textarea>
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={status === 'loading'}
-                  className="w-full bg-secondary hover:bg-red-700 text-white font-bold py-4 rounded transition-colors duration-300 uppercase tracking-wide shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {status === 'loading' ? (
-                    <>
-                      <Loader2 className="animate-spin" size={20} />
-                      Подготвяне...
-                    </>
-                  ) : (
-                    'Изпрати Съобщение'
+                  {status === 'error' && (
+                    <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded flex items-start gap-3 text-sm">
+                       <AlertCircle size={18} className="mt-0.5 flex-shrink-0" />
+                       <div>
+                         <p className="font-bold">Възникна грешка!</p>
+                         <p>Моля опитайте отново. Ако проблемът продължава, използвайте телефоните за връзка. (Ако тествате локално, качете сайта на хостинг).</p>
+                       </div>
+                    </div>
                   )}
-                </button>
+
+                  <button 
+                    type="submit" 
+                    disabled={status === 'sending'}
+                    className="w-full bg-secondary hover:bg-red-700 text-white font-bold py-4 rounded transition-colors duration-300 uppercase tracking-wide shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {status === 'sending' ? (
+                      <>
+                        <Loader2 size={20} className="animate-spin" /> Изпращане...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={20} /> Изпрати Съобщение
+                      </>
+                    )}
+                  </button>
+                  
+                  <p className="text-[10px] text-gray-500 text-center mt-2 opacity-50">
+                    * При първоначално изпращане проверете папка SPAM за имейл за активация.
+                  </p>
               </form>
             )}
           </div>
@@ -209,9 +244,16 @@ const Contact: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-gray-800">
             <div>
-              <h3 className="text-2xl font-black mb-4 flex items-center uppercase tracking-tighter">
-                 Dimov<span className="text-secondary">Const</span>ruction
-              </h3>
+              <div className="mb-4">
+                 <svg viewBox="0 0 400 200" className="h-16 w-auto" aria-label="Dimov Construction Logo">
+                    <g transform="translate(200, 85)">
+                      <text transform="translate(-127, 0) skewX(-4)" fill="#DC2626" fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="112" textAnchor="middle" dominantBaseline="middle">D</text>
+                      <text transform="translate(5, 0) skewX(0)" fill="#FFFFFF" fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="85" textAnchor="middle" dominantBaseline="middle" letterSpacing="0em">imo</text>
+                      <text transform="translate(125, 0) skewX(-44)" fill="#DC2626" fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="85" textAnchor="middle" dominantBaseline="middle">V</text>
+                    </g>
+                    <text x="200" y="146" transform="rotate(0 200 146) skewX(0)" fill="#FFFFFF" fontFamily="Montserrat, sans-serif" fontWeight="bold" fontSize="20" letterSpacing="0.65em" textAnchor="middle" dominantBaseline="middle">CONSTRUCTION</text>
+                 </svg>
+              </div>
               <p className="text-gray-500 text-sm max-w-xs">
                 Цялостни решения в проектирането на стоманени конструкции и индустриални сгради.
               </p>

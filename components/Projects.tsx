@@ -182,6 +182,13 @@ const Projects: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedProject, nextImage, prevImage]);
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById(SectionId.CONTACT);
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id={SectionId.PROJECTS} className="py-24 bg-gray-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -259,7 +266,10 @@ const Projects: React.FC = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <button className="bg-primary hover:bg-secondary text-white font-bold py-4 px-10 rounded transition-colors duration-300 uppercase tracking-wide shadow-lg">
+          <button 
+            onClick={scrollToContact}
+            className="bg-primary hover:bg-secondary text-white font-bold py-4 px-10 rounded transition-colors duration-300 uppercase tracking-wide shadow-lg"
+          >
             Свържете се с нас
           </button>
         </div>
