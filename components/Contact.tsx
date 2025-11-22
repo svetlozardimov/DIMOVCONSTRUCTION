@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SectionId } from '../types';
-import { MapPin, Phone, Mail, Globe } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Loader2, CheckCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setStatus('loading');
+
+    const subject = `Запитване от уебсайт: ${formData.name}`;
+    const body = `Име: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}\n\nСъобщение:\n${formData.message}`;
+    
+    const mailtoLink = `mailto:dimovconstruction.sz@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Short delay to show loading state, then open email client
+    setTimeout(() => {
+      window.location.href = mailtoLink;
+      
+      setStatus('success');
+      setFormData({ name: '', phone: '', email: '', message: '' });
+      
+      // Reset status after 5 seconds
+      setTimeout(() => setStatus('idle'), 5000);
+    }, 1000);
+  };
+
   return (
     <section id={SectionId.CONTACT} className="py-24 bg-white relative">
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-primary"></div>
@@ -83,32 +119,86 @@ const Contact: React.FC = () => {
             <h4 className="text-2xl font-bold text-white mb-2 relative z-10">Изпратете запитване</h4>
             <p className="text-gray-400 text-sm mb-8 relative z-10">Ще се свържем с вас възможно най-скоро.</p>
             
-            <form className="space-y-6 relative z-10" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-xs font-bold uppercase text-gray-400 mb-1">Име</label>
-                  <input type="text" id="name" className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
+            {status === 'success' ? (
+              <div className="relative z-10 bg-green-500/10 border border-green-500/20 rounded-lg p-8 text-center animate-fade-in">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500 mb-4">
+                  <CheckCircle className="w-8 h-8 text-white" />
                 </div>
-                <div>
-                  <label htmlFor="phone" className="block text-xs font-bold uppercase text-gray-400 mb-1">Телефон</label>
-                  <input type="tel" id="phone" className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
+                <h5 className="text-xl font-bold text-white mb-2">Готово!</h5>
+                <p className="text-gray-300">Вашият имейл клиент беше отворен с попълнените данни. Моля, натиснете бутона за изпращане в него.</p>
+                <button 
+                  onClick={() => setStatus('idle')}
+                  className="mt-6 text-sm font-bold text-green-400 hover:text-white uppercase tracking-wide"
+                >
+                  Изпрати ново съобщение
+                </button>
+              </div>
+            ) : (
+              <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-xs font-bold uppercase text-gray-400 mb-1">Име</label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" 
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-xs font-bold uppercase text-gray-400 mb-1">Телефон</label>
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" 
+                    />
+                  </div>
                 </div>
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="email" className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
-              </div>
+                
+                <div>
+                  <label htmlFor="email" className="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" 
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="message" className="block text-xs font-bold uppercase text-gray-400 mb-1">Съобщение</label>
-                <textarea id="message" rows={4} className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all"></textarea>
-              </div>
+                <div>
+                  <label htmlFor="message" className="block text-xs font-bold uppercase text-gray-400 mb-1">Съобщение</label>
+                  <textarea 
+                    id="message" 
+                    rows={4} 
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all"
+                  ></textarea>
+                </div>
 
-              <button type="submit" className="w-full bg-secondary hover:bg-red-700 text-white font-bold py-4 rounded transition-colors duration-300 uppercase tracking-wide shadow-lg">
-                Изпрати Съобщение
-              </button>
-            </form>
+                <button 
+                  type="submit" 
+                  disabled={status === 'loading'}
+                  className="w-full bg-secondary hover:bg-red-700 text-white font-bold py-4 rounded transition-colors duration-300 uppercase tracking-wide shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {status === 'loading' ? (
+                    <>
+                      <Loader2 className="animate-spin" size={20} />
+                      Подготвяне...
+                    </>
+                  ) : (
+                    'Изпрати Съобщение'
+                  )}
+                </button>
+              </form>
+            )}
           </div>
 
         </div>

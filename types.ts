@@ -14,7 +14,8 @@ export interface Project {
   subtitle?: string;
   category: string;
   description?: string;
-  imageUrl: string;
+  imageUrl: string; // Thumbnail image
+  images: string[]; // Gallery images
   specs?: {
     area?: string;
     height?: string;

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { SectionId, Project } from '../types';
-import { Maximize, Calendar, ArrowUpFromLine, Building } from 'lucide-react';
+import { Maximize, Calendar, ArrowUpFromLine, Building, X, ZoomIn, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const projects: Project[] = [
   {
@@ -8,8 +8,11 @@ const projects: Project[] = [
     title: "Цех за метални изделия",
     subtitle: "гр. Раднево",
     category: "Индустриални",
-    // Placeholder: Голямо индустриално хале
-    imageUrl: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&q=80&w=800", 
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/radnevo_ioyfaz.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/radnevo_ioyfaz.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820253/radnevo-1_kpttq4.png"
+    ],
     specs: {
       area: "10 000 m²",
       height: "13 m",
@@ -22,8 +25,11 @@ const projects: Project[] = [
     title: "Завод за производство на сейфове",
     subtitle: "гр. Казанлък",
     category: "Индустриални",
-    // Placeholder: Метална конструкция (синя/индустриална)
-    imageUrl: "https://images.unsplash.com/photo-1535732759880-c8566e3be2f5?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819467/kazanlak_kchvoj.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819467/kazanlak_kchvoj.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820249/kazanlak-1_ybgljq.jpg"
+    ],
     specs: {
       area: "5 000 m²",
       height: "10 m",
@@ -36,8 +42,11 @@ const projects: Project[] = [
     title: "Производствено складова база",
     subtitle: "за метални изделия, гр. Стара Загора",
     category: "Складови",
-    // Placeholder: Модерен склад/панели
-    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/damiana_dnezbr.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/damiana_dnezbr.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820242/damiana-1_ayclsf.jpg"
+    ],
     specs: {
       area: "10 000 m²",
       height: "13 m",
@@ -50,8 +59,11 @@ const projects: Project[] = [
     title: "Зала за тенис на корт",
     subtitle: "гр. Стара Загора",
     category: "Спортни",
-    // Placeholder: Зала с голям отвор
-    imageUrl: "https://images.unsplash.com/photo-1596233123972-499d61268c95?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819467/tenis_jzokpq.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819467/tenis_jzokpq.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820256/tenis-1_zoyp0t.jpg"
+    ],
     specs: {
       area: "2 000 m²",
       height: "10 m",
@@ -64,8 +76,10 @@ const projects: Project[] = [
     title: "Изложбена зала за автомобили",
     subtitle: "и автосервиз (Honda), гр. Стара Загора",
     category: "Шоурум",
-    // Placeholder: Стъклена фасада/шоурум
-    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819467/honda_obmkud.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819467/honda_obmkud.jpg"
+    ],
     specs: {
       area: "1 200 m²",
       height: "8 m",
@@ -78,8 +92,10 @@ const projects: Project[] = [
     title: "Изложбена зала за автомобили",
     subtitle: "гр. Стара Загора",
     category: "Шоурум",
-    // Placeholder: Автомобилен център
-    imageUrl: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/autoheat_aqdsi2.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/autoheat_aqdsi2.jpg"
+    ],
     specs: {
       area: "3 911 m²",
       height: "8 m",
@@ -92,8 +108,11 @@ const projects: Project[] = [
     title: "Цех за метални изделия",
     subtitle: "гр. Стара Загора",
     category: "Индустриални",
-    // Placeholder: Конструкция в строеж
-    imageUrl: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/globus_b3wbta.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/globus_b3wbta.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820245/globus-1_edqfpv.png"
+    ],
     specs: {
       area: "8 000 m²",
       height: "13 m",
@@ -106,8 +125,12 @@ const projects: Project[] = [
     title: "Шоурум за автомобили",
     subtitle: "и автосервиз, гр. Стара Загора",
     category: "Шоурум",
-    // Placeholder: Модерен търговски обект
-    imageUrl: "https://images.unsplash.com/photo-1550505095-34e386c66181?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/novacar_wrlyun.jpg",
+    images: [
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763819466/novacar_wrlyun.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820251/novakar-1_mu68zh.jpg",
+      "https://res.cloudinary.com/ddkkzk4ov/image/upload/v1763820255/novakar-2_lxfbdh.png"
+    ],
     specs: {
       area: "1 500 m²",
       height: "7 m",
@@ -118,10 +141,51 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const openLightbox = (project: Project) => {
+    setSelectedProject(project);
+    setCurrentImageIndex(0); // Always start from the first image
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setSelectedProject(null);
+    document.body.style.overflow = 'auto';
+  };
+
+  const nextImage = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (selectedProject) {
+      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images.length);
+    }
+  }, [selectedProject]);
+
+  const prevImage = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (selectedProject) {
+      setCurrentImageIndex((prev) => (prev - 1 + selectedProject.images.length) % selectedProject.images.length);
+    }
+  }, [selectedProject]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedProject) return;
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'Escape') closeLightbox();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject, nextImage, prevImage]);
+
   return (
-    <section id={SectionId.PROJECTS} className="py-24 bg-gray-50">
+    <section id={SectionId.PROJECTS} className="py-24 bg-gray-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in-up">
           <h2 className="text-secondary font-bold tracking-widest uppercase mb-2 text-sm">Портфолио</h2>
           <h3 className="text-4xl font-black text-primary uppercase">Проектирани Обекти</h3>
           <p className="text-gray-500 mt-2 text-lg">Със стоманена носеща конструкция</p>
@@ -130,17 +194,29 @@ const Projects: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {projects.map((project) => (
-            <div key={project.id} className="group bg-white rounded-none border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
-              {/* Image Container */}
-              <div className="relative h-64 overflow-hidden flex-shrink-0 bg-gray-200">
+            <div key={project.id} className="group bg-white rounded-none border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full animate-fade-in">
+              {/* Image Container - Aspect Ratio 4:3 */}
+              <div 
+                className="relative aspect-[4/3] overflow-hidden flex-shrink-0 bg-gray-200 cursor-pointer"
+                onClick={() => openLightbox(project)}
+              >
                 <img 
                   src={project.imageUrl} 
                   alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 w-12 h-12 drop-shadow-lg" />
+                </div>
                 <div className="absolute top-0 right-0 bg-secondary text-white text-xs font-bold px-4 py-1 uppercase tracking-wider">
                   {project.category}
                 </div>
+                {/* Multiple images indicator */}
+                {project.images.length > 1 && (
+                   <div className="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
+                      <ZoomIn size={10} /> +{project.images.length - 1}
+                   </div>
+                )}
               </div>
 
               {/* Content */}
@@ -188,6 +264,126 @@ const Projects: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Fullscreen Lightbox Modal - Gallery Mode */}
+      {selectedProject && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center animate-fade-in"
+          onClick={closeLightbox}
+        >
+          {/* Top Bar */}
+          <div className="absolute top-0 left-0 w-full flex justify-between items-center p-4 z-[110]">
+              <div className="flex flex-col">
+                 <h2 className="text-white font-bold text-lg hidden sm:block">{selectedProject.title}</h2>
+                 <span className="text-gray-400 text-xs">{currentImageIndex + 1} / {selectedProject.images.length}</span>
+              </div>
+              <div className="flex gap-4">
+                <a 
+                  href={selectedProject.images[currentImageIndex]} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/80 hover:text-white bg-white/10 hover:bg-secondary/80 rounded-full px-4 py-2 text-xs font-bold uppercase flex items-center gap-2 transition-all"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                    <ExternalLink size={16} /> Виж Оригинал
+                </a>
+                <button 
+                    onClick={closeLightbox}
+                    className="text-white bg-white/10 hover:bg-red-600 rounded-full p-2 transition-all"
+                >
+                    <X size={24} />
+                </button>
+              </div>
+          </div>
+
+          {/* Main Image Area */}
+          <div 
+            className="w-full h-full flex flex-col overflow-hidden pt-16 pb-0 relative group/lightbox"
+            onClick={(e) => e.stopPropagation()}
+          >
+             {/* Navigation Arrows */}
+             {selectedProject.images.length > 1 && (
+               <>
+                 <button 
+                   onClick={prevImage}
+                   className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 hover:bg-secondary text-white p-3 rounded-full transition-all opacity-0 group-hover/lightbox:opacity-100 md:opacity-100"
+                 >
+                   <ChevronLeft size={32} />
+                 </button>
+                 <button 
+                   onClick={nextImage}
+                   className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 hover:bg-secondary text-white p-3 rounded-full transition-all opacity-0 group-hover/lightbox:opacity-100 md:opacity-100"
+                 >
+                   <ChevronRight size={32} />
+                 </button>
+               </>
+             )}
+
+             {/* Image Display */}
+             <div className="flex-1 w-full relative flex items-center justify-center p-2 md:p-4 bg-black" onClick={closeLightbox}>
+                <img 
+                  src={selectedProject.images[currentImageIndex]} 
+                  alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`} 
+                  className="h-auto w-auto max-w-full max-h-[85vh] object-contain shadow-none transition-opacity duration-300"
+                />
+                
+                {/* Thumbnails Overlay (Bottom of Image Area) */}
+                {selectedProject.images.length > 1 && (
+                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/50 rounded-full backdrop-blur-sm overflow-x-auto max-w-[90%]">
+                      {selectedProject.images.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                          className={`w-12 h-12 rounded overflow-hidden border-2 transition-all flex-shrink-0 ${
+                             currentImageIndex === idx ? 'border-secondary scale-110' : 'border-transparent opacity-50 hover:opacity-100'
+                          }`}
+                        >
+                          <img src={img} alt="thumb" className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+                   </div>
+                )}
+             </div>
+             
+             {/* Details Section - Bottom Bar */}
+             <div className="flex-shrink-0 w-full bg-white p-6 md:p-8 border-t border-gray-800 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] max-h-[35vh] overflow-y-auto z-20 relative">
+                <div className="max-w-7xl mx-auto">
+                  <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
+                      <div className="md:w-1/3">
+                          <div className="text-xs font-bold text-secondary uppercase tracking-wider mb-1">{selectedProject.category}</div>
+                          <h3 className="text-2xl md:text-3xl font-black text-primary leading-tight">{selectedProject.title}</h3>
+                          <p className="text-gray-500 font-medium uppercase text-sm mt-1">{selectedProject.subtitle}</p>
+                      </div>
+                      
+                      <div className="md:w-2/3 w-full grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {selectedProject.specs?.investor && (
+                             <div className="col-span-2 md:col-span-1 bg-gray-50 p-3 rounded border-l-2 border-secondary">
+                                <div className="text-[10px] font-bold text-gray-400 uppercase mb-1">Инвеститор</div>
+                                <div className="font-bold text-primary text-sm leading-tight">{selectedProject.specs.investor}</div>
+                             </div>
+                          )}
+                           <div className="bg-gray-50 p-3 rounded text-center">
+                              <Maximize className="w-5 h-5 mx-auto mb-1 text-secondary" />
+                              <div className="font-black text-primary text-lg">{selectedProject.specs?.area}</div>
+                              <div className="text-[10px] uppercase text-gray-500">Площ</div>
+                           </div>
+                           <div className="bg-gray-50 p-3 rounded text-center">
+                              <ArrowUpFromLine className="w-5 h-5 mx-auto mb-1 text-secondary" />
+                              <div className="font-black text-primary text-lg">{selectedProject.specs?.height}</div>
+                              <div className="text-[10px] uppercase text-gray-500">Височина</div>
+                           </div>
+                           <div className="bg-gray-50 p-3 rounded text-center">
+                              <Calendar className="w-5 h-5 mx-auto mb-1 text-secondary" />
+                              <div className="font-black text-primary text-lg">{selectedProject.specs?.year}</div>
+                              <div className="text-[10px] uppercase text-gray-500">Година</div>
+                           </div>
+                      </div>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
